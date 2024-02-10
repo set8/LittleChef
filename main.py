@@ -1,10 +1,11 @@
+import pymongo
 from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
 
 from random import seed
 from hashlib import sha256
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates", static_folder="static")
 app.secret_key = seed() #will make data stored on filesystem encrypted and secure
 
 app.config["SESSION_PERMANENT"] = True #User will remain logged in for time after browser close
@@ -12,7 +13,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 @app.route("/") #this is the Home screen
-def index(): #will default to home if signed in
+def index():
 
     if not session.get("username"):
         return redirect("/login")
@@ -21,17 +22,20 @@ def index(): #will default to home if signed in
 
 @app.route("/login", methods= ["POST", "GET"])
 def login(): #if not signed in, goes to login
-
+    err = ""
+    
     if request.method == "POST": #user submitted form
         # if usr not in users: meaning that user doesn't alreaady exist -> redirect them to sign-up
-        # if login(usr, sha256(pass.encode("utf-8")).hexdigest()): meaning that the entered password is valid for a pre-existing user 
+        #hashpass = sha256(pass.encode("utf-8")).hexdigest()
+        # if validateUser(usr, sha256(pass.encode("utf-8")).hexdigest()): meaning that the entered password is valid for a pre-existing user 
         session["username"] = request.form.get("username")
         return redirect("/")
-
-    return render_template("dishes.html") #brings user to dishes for testing TODO change
+    
+    return render_template("login.html", err=err, isErr = (str(bool(err)))) #brings user to login page
 
 @app.route("/signup", methods= ["POST", "GET"])
 def signup(): #if not signed in, goes to login
+    err = ""
 
     if request.method == "POST": #user submitted form
         # if usr not in users: meaning that user doesn't alreaady exist -> redirect them to sign-up
@@ -40,7 +44,7 @@ def signup(): #if not signed in, goes to login
         # store(sha256(request.form.get("pw").encode("uft-8")).hexdigest())
         return redirect("/")
 
-    return render_template("login.html") #brings user to login
+    return render_template("signup.html", err=err) #brings user to login
 
 @app.route("/logout")
 def logout():
@@ -50,12 +54,10 @@ def logout():
 @app.route("/dishes")
 def dishes():
 
-    # if not session.get("username"): #not signed in
-    #     return redirect("/login") TODO undo
+    if not session.get("username"): #not signed in
+        return redirect("/login")
 
     # dishes = getDishes(session.userData)
-    # dish = next(dishes)
-
     render_template("dishes.html") #TODO include 3 dishes
 
 @app.route("/pantry")
