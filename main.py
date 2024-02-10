@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
 
 from random import seed
+from hashlib import sha256
 
 app = Flask(__name__)
 app.secret_key = seed() #will make data stored on filesystem encrypted and secure
@@ -22,8 +23,22 @@ def index(): #will default to home if signed in
 def login(): #if not signed in, goes to login
 
     if request.method == "POST": #user submitted form
+        # if usr not in users: meaning that user doesn't alreaady exist -> redirect them to sign-up
+        # if login(usr, sha256(pass.encode("utf-8")).hexdigest()): meaning that the entered password is valid for a pre-existing user 
         session["username"] = request.form.get("username")
-        return redirect("/") 
+        return redirect("/")
+
+    return render_template("dishes.html") #brings user to dishes for testing TODO change
+
+@app.route("/signup", methods= ["POST", "GET"])
+def signup(): #if not signed in, goes to login
+
+    if request.method == "POST": #user submitted form
+        # if usr not in users: meaning that user doesn't alreaady exist -> redirect them to sign-up
+        # if login(usr, sha256(pass.encode("utf-8")).hexdigest()): meaning that the entered password is valid for a pre-existing user 
+        session["username"] = request.form.get("username")
+        # store(sha256(request.form.get("pw").encode("uft-8")).hexdigest())
+        return redirect("/")
 
     return render_template("login.html") #brings user to login
 
@@ -35,8 +50,8 @@ def logout():
 @app.route("/dishes")
 def dishes():
 
-    if not session.get("username"): #not signed in
-        return redirect("/login")
+    # if not session.get("username"): #not signed in
+    #     return redirect("/login") TODO undo
 
     # dishes = getDishes(session.userData)
     # dish = next(dishes)
@@ -76,4 +91,4 @@ def uploadForm():
     return render_template("/pantryUploadForm")
 
 if __name__ == "__main__":
-    app.run(debug=True, port = 8080)
+    app.run(debug=True, host="0.0.0.0", port = 8081)
