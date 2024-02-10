@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request, session
-from flask import Session
+from flask_session import Session
 
 from random import seed
 
