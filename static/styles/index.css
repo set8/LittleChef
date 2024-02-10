@@ -1,0 +1,43 @@
+html, body {
+    /* When there is not enough content */
+    min-height: calc(100vh - 100px);
+    margin: 0px
+  }
+  
+  body {
+    position: relative;
+    /* Sum of heights for footer and nav */
+    padding-bottom: 100px;
+  }
+  
+  h2 {
+    /* Keep it from pushing the body down */
+    margin-top: 0px;
+    padding-top: 16px;
+  }
+  
+  .footer {
+    position: absolute;
+    
+    /* Place above nav */
+    bottom: 50px;
+    left: 0px;
+    
+    height: 50px;
+    width: 100%;
+      
+    background-color: blue;
+    color: white;
+    text-align: center;
+  }
+  
+  .stickyBottomNav {
+     position: fixed;
+     left: 0;
+     bottom: 0;
+     width: 100%;
+     z-index: 5;
+     background-color: red;
+     color: white;
+     text-align: center;
+  }

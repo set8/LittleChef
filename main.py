@@ -13,8 +13,8 @@ Session(app)
 @app.route("/") #this is the Home screen
 def index(): #will default to home if signed in
 
-    if not session.get("username"):
-        return redirect("/login")
+    # if not session.get("username"):
+    #     return redirect("/login")
 
     return render_template('index.html')
 
