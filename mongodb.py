@@ -7,10 +7,9 @@ ca = certifi.where()
 key = "34a63dfcc24fadbc2f4cf435e4d56ed99a36115c"
 cluster = MongoClient("mongodb+srv://adityabaradi:Aditya%40123@lil-chef.fevflcg.mongodb.net/?retryWrites=true&w=majority", 
                       ssl=True, 
-                      tlsAllowInvalidCertificates=True,  # May need this as a temporary workaround during configuration changes
+                      tlsAllowInvalidCertificates=False,
                       tls=True,
-                      tlsCAFile=ca
-                      )
+                      tlsCAFile=ca)
 
 #set up mongodb
 

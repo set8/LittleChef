@@ -52,17 +52,14 @@ def signup(): #if not signed in, goes to login
     err = ""
 
     if request.method == "POST": #user submitted form
-        #TODO test all values and conditionals
         username = request.form.get("username")
         hashpass = None if not request.form.get("password") else sha256(request.form.get("password").encode("utf-8")).hexdigest()
         age = request.form.get("age")
 
-        allergens = request.form.get("allergen").split(",")
+        allergens = request.form.get("allergens")
         diet = request.form.get("diet")
 
-        print("before")
         validation = validateUser(username, hashpass)
-        print("after")
         
         if not (username and age and hashpass): #failed
             err = "Please fill out Username, Password, and Age fields"
@@ -72,9 +69,8 @@ def signup(): #if not signed in, goes to login
             err = "User account already exists, please log in"
         
         else: #everything is peachy :3
-            session["username"] = username #can now navigate the websites
-            print("im alive so far")
-            createUser(username, hashpass, allergens, diet, age, {}) #upload to mongo
+            session["username"] = username #can now navigate the website
+            createUser(username, hashpass, "" if not allergens else allergens.split(","), diet, age, {}) #upload to mongo
             return redirect("/")
 
     return render_template("signup.html", err = err, isErr = (str(bool(err)))) #brings user to signup
@@ -99,13 +95,6 @@ def pantry():
         return redirect("/login")
 
     return render_template("pantry.txt")
-    
-# @app.route("/pantryUploadCamera")
-# def uploadCamera():
-#     if not session.get("username"): #not signed in
-#         return redirect("/login")
-    
-#     return render_template("pantryUploadCamera.html")
 
 @app.route("/pantryUploadForm", methods = ["POST", "GET"])
 def uploadForm():
@@ -117,9 +106,9 @@ def uploadForm():
         foodQuantityNumber = request.form.get("quantityNumber") #returns the number of (unit of measure) the user has of a certain foodstuff
         foodQuantityMeasure = request.form.get("quantityMeasure") #returns the unit of measure for which the user has a quantity of a given foodstuff
         
-        print(f"'{foodQuantityNumber} {foodQuantityMeasure} of {foodName}': WAS ENTERED")
 
         session["pantry"][foodName] = f"{foodQuantityNumber} {foodQuantityMeasure}" #overwrites pre-existing foodstuffs
+        
         return redirect("/pantryUploadForm") #allows user to resubmit without having to erase previous submission
 
     return render_template("/pantryUploadForm.html")
