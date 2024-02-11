@@ -1,8 +1,8 @@
 from openai import OpenAI
 import json
 from os import environ
+# from ratelimit import limits, sleep_and_retry
 from dotenv import load_dotenv
-
 
 load_dotenv()
 
