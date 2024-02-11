@@ -1,0 +1,15 @@
+.bottom-panel {
+    display: flex; 
+    flex-direction: row;
+    justify-content: flex-start;  
+}
+
+.bottom-panel-button {
+    min-height: fit-content;
+    flex-grow: 3;
+}
+
+.bottom-panel-error {
+    min-height: fit-content;
+    flex-grow: 9;
+}
