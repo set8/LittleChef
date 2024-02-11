@@ -1,10 +1,11 @@
 #pckgs
 import pymongo
-from mongodb import validateUser, getPantry, createUser, setPantry
+from mongodb import validateUser, getPantry, createUser, setPantry, getUserData
 
 from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
 #built-in
+from threading import Thread
 from random import seed
 from hashlib import sha256
 import json
@@ -77,7 +78,7 @@ def signup(): #if not signed in, goes to login
 
     return render_template("signup.html", err = err, isErr = (str(bool(err)))) #brings user to signup
 
-@app.route("/logout") #DONE
+@app.route("/logout")
 def logout():
     session["username"] = None
     return redirect("/login") #back to login screen
@@ -88,8 +89,29 @@ def dishes():
     if not session.get("username"): #not signed in
         return redirect("/login")
 
-    # dishes = getDishes(session.userData)
-    return render_template("dishes.html") #TODO include 3 dishes
+    Dish.dishes = [] #reset class attribute for future assignment
+
+    data = getUserData(session.get("username"))
+    userdata = {
+        "pantry": data[3],
+        "allergies": (data[0] if type(data[0]) is not list else ",".join(data[0])),
+        "diet" : data[1],
+        "age" : data[2]
+    }
+
+    t1 = Thread(target=Dish, args=userdata)
+    t2 = Thread(target=Dish, args=userdata)
+    t3 = Thread(target=Dish, args=userdata) #have the dishes wait for join() in the class variable dishes
+    
+    ts = (t1, t2, t3)
+    [x.start() for x in ts]
+    [x.join() for x in ts] # maybe pre-process new batch for refresh too
+
+    d1, d2, d3 = Dish.dishes #unpack
+    
+    return render_template("dishes.html", d1Name = d1.name, d2Name = d2.name, d3Name = d3.name, d1Img = d1.image, d2Image = d2.image, d3Image = d3.image, 
+                           d1Instructions = d1.instructions, d2Instructions = d2.instructions, d3Instructions = d3.instructions,
+                           d1Ingredients = d1.ingredients, d2Ingredients = d2.ingredients, d3Ingredients = d3.ingredients)
 
 @app.route("/pantry")
 def pantry():

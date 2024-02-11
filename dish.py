@@ -92,11 +92,15 @@ def getImage(userdata):
     return image_url
 
 class Dish:
+    dishes = []
+
     def __init__(self, userdata):
         self.name = getName(userdata)
-        self.ingredients = getIngredients(userdata)
-        self.recipe = getRecipe(userdata)
+        self.ingredients = [x[1:] for x in getIngredients(userdata)][1:]
+        self.recipe = [x[2:] for x in getRecipe(userdata)][1:]
         self.image = getImage(userdata)
         
+        Dish.dishes.append(self)
+
     def __str__(self):
         return f"{self.name}:{self.image}\n\n{self.ingredients}\n\n{self.recipe}"

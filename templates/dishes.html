@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Whats Cookin'?</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .item {
+            border: 1px solid lightgray;
+            margin-bottom: 15px;
+            padding: 10px;
+        }  
+    </style>
+</head>
+
+<body>
+    <h1><center>Menu</center></h1>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-3">  <button id="refreshButton" class="btn btn-primary">Refresh</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12"> 
+                <div class="item d-flex">
+                    
+                    <div class="img-area">
+                        <img src="{{ url_for(dish1Image) }}" alt="Placeholder Image" width="100" height="100"> 
+                    </div>
+
+                    <div class="text-area ml-3"> 
+                        <h3>{{ dish1 }}</h3>
+                        <p>{{ dish1Ingredients }}</p>
+                    </div>
+                </div>
+
+                <div class="item d-flex"> 
+                    <div class="img-area">
+                        <img src="placeholder.jpg" alt="Placeholder Image" width="100" height="100"> 
+                    </div>
+                    <div class="text-area ml-3"> 
+                        <h3>{{ dish2 }}</h3>
+                        <p>{{ dish2Ingredients }}</p>
+                    </div>
+                </div>
+                
+                <div class="item d-flex">
+                    <div class="img-area">
+                        <img src="placeholder.jpg" alt="Placeholder Image" width="100" height="100"> 
+                    </div>
+                    <div class="text-area ml-3"> 
+                        <h3>{{ dish3 }}</h3>
+                        <p>{{ dish3Ingredients }}</p>
+                    </div> 
+                </div>
+            </div> 
+        </div>
+    </div>
+
+    <script>
+    document.getElementById('refreshButton').addEventListener('click', function() {
+        location.reload(); // Reloads the current page
+    });
+    </script>
+</body>
+</html>
