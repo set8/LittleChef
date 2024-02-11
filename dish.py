@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-apk = "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"
+apk = environ['openAIKey']
 
 
 client = OpenAI(api_key = apk)
