@@ -1,15 +1,14 @@
 import pymongo
 from pymongo import MongoClient
-import certifi
+
+from os import environ
+from dotenv import load_dotenv
 #set up information
 
-ca = certifi.where()
-key = "34a63dfcc24fadbc2f4cf435e4d56ed99a36115c"
-cluster = MongoClient("mongodb+srv://adityabaradi:Aditya%40123@lil-chef.fevflcg.mongodb.net/?retryWrites=true&w=majority", 
-                      ssl=True, 
-                      tlsAllowInvalidCertificates=False,
-                      tls=True,
-                      tlsCAFile=ca)
+load_dotenv()
+
+mongoConnection = environ['mongoFull']
+cluster = MongoClient(mongoConnection)
 
 #set up mongodb
 
@@ -18,8 +17,6 @@ collection = db["Flask_mongo"]
 
 def createUser(usr, hashpw, allergies, diet, age, pantry ):  
     user_name = usr 
-    print(usr, hashpw, allergies, diet, age, pantry, sep="\n")
-
     collection.insert_one({
         user_name:  {
             "password_hash": hashpw,
@@ -29,6 +26,11 @@ def createUser(usr, hashpw, allergies, diet, age, pantry ):
             "pantry_": pantry}})
 
 def getUserData(usr):
+    """
+    [
+    [Allergies], "diet", "age", {Food:quant}
+    ]
+    """
     diction= collection.find_one()
     for i in diction:
         info= i
@@ -81,7 +83,6 @@ def validateUser(usr,hash_pass):
     """Returns -1 if user not is database
     Returns 0 if user in database but user.hashpass != hashpass
     Returns 1 if user in database and hash_pass for the user and the parameter are the same"""
-    print(usr, hash_pass)
     diction = collection.find_one()
     for i in diction:
         info = i
@@ -103,6 +104,7 @@ def deleteUser(usr):
         if info == usr:
             value = diction.get(i)
             collection.delete_one({usr:value})
+            
 def setAllergy(usr, allergy):
     diction = collection.find_one()
     for i in diction:
@@ -122,7 +124,12 @@ def setPantry(usr, food, quant):
         info = i
         if info == usr:
             value = diction.get(i)
-            value["pantry_"][food] = quant
+            
+            if len([x for x in quant if x.isdigit()]) == len([x for x in quant if x == "0"]): #all numbers within measurement r 0
+                del value["pantry_"][food]
+            else:
+                value["pantry_"][food] = quant
+
             dict_vals= value.values()
             final_val= list(dict_vals)
             deleteUser(usr)
