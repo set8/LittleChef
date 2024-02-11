@@ -104,7 +104,7 @@ def deleteUser(usr):
         if info == usr:
             value = diction.get(i)
             collection.delete_one({usr:value})
-            
+
 def setAllergy(usr, allergy):
     diction = collection.find_one()
     for i in diction:
@@ -125,10 +125,10 @@ def setPantry(usr, food, quant):
         if info == usr:
             value = diction.get(i)
             
-            if len([x for x in quant if x.isdigit()]) == len([x for x in quant if x == "0"]): #all numbers within measurement r 0
-                del value["pantry_"][food]
-            else:
-                value["pantry_"][food] = quant
+            # if len([x for x in quant if x.isdigit()]) == len([x for x in quant if x == "0"]): #all numbers within measurement r 0
+            #     del value["pantry_"][food]
+            # else:
+            value["pantry_"][food] = quant
 
             dict_vals= value.values()
             final_val= list(dict_vals)

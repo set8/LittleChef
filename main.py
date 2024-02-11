@@ -90,29 +90,31 @@ def dishes():
         return redirect("/login")
 
     Dish.dishes = [] #reset class attribute for future assignment
-
     data = getUserData(session.get("username"))
-    userdata = {
-        "pantry": data[3],
-        "allergies": (data[0] if type(data[0]) is not list else ",".join(data[0])),
-        "diet" : data[1],
-        "age" : data[2]
-    }
-
-    t1 = Thread(target=Dish, args=userdata)
-    t2 = Thread(target=Dish, args=userdata)
-    t3 = Thread(target=Dish, args=userdata) #have the dishes wait for join() in the class variable dishes
     
-    ts = (t1, t2, t3)
-    [x.start() for x in ts]
-    [x.join() for x in ts] # maybe pre-process new batch for refresh too
+    if data is not None:
+        userdata = {
+            "pantry": data[3],
+            "allergies": (data[0] if type(data[0]) is not list else ",".join(data[0])),
+            "diet" : data[1],
+            "age" : data[2]
+        }
 
-    d1, d2, d3 = Dish.dishes #unpack
-    
-    return render_template("dishes.html", d1Name = d1.name, d2Name = d2.name, d3Name = d3.name, d1Img = d1.image, d2Image = d2.image, d3Image = d3.image, 
-                           d1Instructions = d1.instructions, d2Instructions = d2.instructions, d3Instructions = d3.instructions,
-                           d1Ingredients = d1.ingredients, d2Ingredients = d2.ingredients, d3Ingredients = d3.ingredients)
+        t1 = Thread(target=Dish, args=userdata)
+        t2 = Thread(target=Dish, args=userdata)
+        t3 = Thread(target=Dish, args=userdata) #have the dishes wait for join() in the class variable dishes
+        
+        ts = (t1, t2, t3)
+        [x.start() for x in ts]
+        [x.join() for x in ts] # maybe pre-process new batch for refresh too
 
+        d1, d2, d3 = Dish.dishes #unpack
+        
+        return render_template("dishes.html", d1Name = d1.name, d2Name = d2.name, d3Name = d3.name, d1Imgage = d1.image, d2Image = d2.image, d3Image = d3.image, 
+                            d1Instructions = d1.instructions, d2Instructions = d2.instructions, d3Instructions = d3.instructions,
+                            d1Ingredients = d1.ingredients, d2Ingredients = d2.ingredients, d3Ingredients = d3.ingredients)
+    else:
+        return "Please add some foods to your pantry before searching for recipies!"
 @app.route("/pantry")
 def pantry():
 
