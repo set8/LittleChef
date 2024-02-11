@@ -5,9 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pantry Upload Form</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href = "{{ url_for('static',filename='styles/login.css') }}">
+
 </head>
 
 <body>
+  <header class="text-center my-auto">
+    Pantry Upload Form
+  </header>
   <div class="container mt-5">
     <form method="post" action="/pantryUploadForm">
     <div class="form-group">
@@ -39,9 +44,29 @@
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
-    <a href="{{ url_for('index') }}">
-        <button class="btn btn-primary mt-3">Home</button>
-    </a>
+        <!-- sticky bottom nav -->
+        <div class="container-fluid mt-3">
+          <div id="bottomNav" class="stickyBottomNav">
+            <div class="d-flex justify-content-between">
+              <!-- home -->
+              <div class="col-md-3 col-sm-6"> 
+                <a href="\"><img src="{{ url_for('static', filename='imgs/home.svg') }}" alt="Home" class="btn-img"></a> 
+              </div>
+              <!-- pantry -->
+              <div class="col-md-3 col-sm-6">
+                <a href="/pantry"><img src="{{ url_for('static', filename='imgs/pantry_icon.svg') }}" alt="Pantry" class="btn-img"></a>
+              </div>
+              <!-- menu -->
+              <div class="col-md-3 col-sm-6">
+                <a href="/dishes"><img src="{{ url_for('static', filename='imgs/menu.svg') }}" alt="Menu" class="btn-img"></a>
+              </div>
+              <!-- logout -->
+              <div class="col-md-3 col-sm-6">
+                <a href="/logout"><img src="{{ url_for('static', filename='imgs/exit.svg') }}" alt="Log Out" class="btn-img"></a>
+              </div>
+            </div>
+          </div>
+        </div>
   </div>
 </body>
 </html>

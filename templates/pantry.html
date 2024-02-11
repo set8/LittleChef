@@ -50,19 +50,19 @@
       <div class="d-flex justify-content-between">
         <!-- home -->
         <div class="col-md-3 col-sm-6"> 
-          <a href="\"><img src="imgs/placeholder.svg" alt="Home" class="btn-img"></a> 
+          <a href="\"><img src="{{ url_for('static', filename='imgs/home.svg') }}" alt="Home" class="btn-img"></a> 
         </div>
         <!-- pantry -->
         <div class="col-md-3 col-sm-6">
-          <a href="/pantry"><img src="imgs/placeholder.svg" alt="Pantry" class="btn-img"></a>
+          <a href="/pantry"><img src="{{ url_for('static', filename='imgs/pantry_icon.svg') }}" alt="Pantry" class="btn-img"></a>
         </div>
         <!-- menu -->
         <div class="col-md-3 col-sm-6">
-          <a href="/dishes"><img src="imgs/placeholder.svg" alt="Menu" class="btn-img"></a>
+          <a href="/dishes"><img src="{{ url_for('static', filename='imgs/menu.svg') }}" alt="Menu" class="btn-img"></a>
         </div>
-        <!-- profile -->
+        <!-- logout -->
         <div class="col-md-3 col-sm-6">
-          <a href="/logout"><img src="imgs/placeholder.svg" alt="Log Out" class="btn-img"></a>
+          <a href="/logout"><img src="{{ url_for('static', filename='imgs/exit.svg') }}" alt="Log Out" class="btn-img"></a>
         </div>
       </div>
     </div>

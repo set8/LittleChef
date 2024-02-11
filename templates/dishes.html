@@ -23,7 +23,7 @@
     </div>
 
     <div class="space-embed"></div>
-    <!--cards-->
+    <!--Recipe 1-->
     <div class="row mx-5 my-2">
         <div class="card mb-3">
             <img src="{{d1Image}}" class="card-img-top" alt="food-img">
@@ -33,7 +33,9 @@
             </div>
         </div>
     </div>
+    <div class="space-embed"></div>
 
+    <!--Recipe 2-->
     <div class="row mx-5 my-2">
         <div class="card mb-3">
             <img src="{{ d2Image }}" class="card-img-top" alt="food-img">
@@ -43,7 +45,8 @@
             </div>
         </div>
     </div>
-
+    <div class="space-embed"></div>
+    <!-- Recipe 3 -->
     <div class="row mx-5 my-2">
         <div class="card mb-3">
             <img src="{{ d3Image }}" class="card-img-top" alt="food-img">
@@ -53,6 +56,34 @@
             </div>
         </div>
     </div>
+    <div class="space-embed"></div>
+    <div class="space-embed"></div>
+    <div class="space-embed"></div>
+
+     <!-- sticky bottom nav -->
+
+     <div class="container-fluid mt-3">
+        <div id="bottomNav" class="stickyBottomNav">
+          <div class="d-flex justify-content-between">
+            <!-- home -->
+            <div class="col-md-3 col-sm-6"> 
+              <a href="\"><img src="{{ url_for('static', filename='imgs/home.svg') }}" alt="Home" class="btn-img"></a> 
+            </div>
+            <!-- pantry -->
+            <div class="col-md-3 col-sm-6">
+              <a href="/pantry"><img src="{{ url_for('static', filename='imgs/pantry_icon.svg') }}" alt="Pantry" class="btn-img"></a>
+            </div>
+            <!-- menu -->
+            <div class="col-md-3 col-sm-6">
+              <a href="/dishes"><img src="{{ url_for('static', filename='imgs/menu.svg') }}" alt="Menu" class="btn-img"></a>
+            </div>
+            <!-- logout -->
+            <div class="col-md-3 col-sm-6">
+              <a href="/logout"><img src="{{ url_for('static', filename='imgs/exit.svg') }}" alt="Log Out" class="btn-img"></a>
+            </div>
+          </div>
+        </div>
+      </div>
 
 
     <script>

@@ -61,6 +61,7 @@
   .card {
     flex-direction: row;
     align-items: center;
+    margin-bottom: 5vw;
 
 }
 .card-title {
