@@ -1,9 +1,14 @@
+#pckgs
 import pymongo
 from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
-
+#built-in
 from random import seed
 from hashlib import sha256
+
+#file imports
+from mongodb import validateUser, getUserData, createUser
+
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
 app.secret_key = seed() #will make data stored on filesystem encrypted and secure
@@ -25,11 +30,20 @@ def login(): #if not signed in, goes to login
     err = ""
     
     if request.method == "POST": #user submitted form
-        # if usr not in users: meaning that user doesn't alreaady exist -> redirect them to sign-up
-        #hashpass = sha256(pass.encode("utf-8")).hexdigest()
-        # if validateUser(usr, sha256(pass.encode("utf-8")).hexdigest()): meaning that the entered password is valid for a pre-existing user 
-        session["username"] = request.form.get("username")
-        return redirect("/")
+        username = request.form.get("username")
+        hashpass = None if not request.form.get("password") else sha256(request.form.get("password").encode("utf-8")).hexdigest()
+
+        validation = validateUser(username, hashpass)
+
+        if not (username and hashpass):
+            err = "Please fill out Username and Password fields"
+        elif validation == -1:
+            err = f"No registered account under {username}"
+        elif validation == 0:
+            err = "Password Incorrect"
+        else:
+            session["username"] = request.form.get("username")
+            return redirect("/")
     
     return render_template("login.html", err = err, isErr = (str(bool(err)))) #brings user to login page
 
@@ -43,18 +57,24 @@ def signup(): #if not signed in, goes to login
         hashpass = None if not request.form.get("password") else sha256(request.form.get("password").encode("utf-8")).hexdigest()
         age = request.form.get("age")
 
-        allergens = request.form.get("allergen")
+        allergens = request.form.get("allergen").split(",")
         diet = request.form.get("diet")
 
+        print("before")
+        validation = validateUser(username, hashpass)
+        print("after")
+        
         if not (username and age and hashpass): #failed
             err = "Please fill out Username, Password, and Age fields"
         elif not age.isdigit() or len([x for x in age if x in "-.," ]) > 0:
             err = "Age must be an integer number"
-        # elif already in DB:
-            # There is already a user with this username, please sign in
+        elif validation == 0 or validation == 1:
+            err = "User account already exists, please log in"
+        
         else: #everything is peachy :3
-            #upload to DB
-            session["username"] = username
+            session["username"] = username #can now navigate the websites
+            print("im alive so far")
+            createUser(username, hashpass, allergens, diet, age, {}) #upload to mongo
             return redirect("/")
 
     return render_template("signup.html", err = err, isErr = (str(bool(err)))) #brings user to signup
@@ -105,4 +125,4 @@ def uploadForm():
     return render_template("/pantryUploadForm.html")
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port = 8081)
+    app.run(host="0.0.0.0", port = 8081)
