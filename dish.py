@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-apk = environ['OPENAI_API_KEY']
+apk = environ['openAIKey']
 
 
 client = OpenAI(api_key = apk)
@@ -29,7 +29,7 @@ def generate(userdata):
         
         restrictions+=f" The person you are cooking for is {userdata['age']} do not include any substances that would be illegal for them to consume "
 
-    responce_1 = client.chat.completions.create(
+    response_1 = client.chat.completions.create(
         messages=[
             
         {
@@ -56,7 +56,7 @@ def generate(userdata):
     )
     
     
-    output = json.loads(responce_1.json())["choices"][0]["message"]["content"].split('\n')
+    output = json.loads(response_1.json())["choices"][0]["message"]["content"].split('\n')
     output = [x for x in output if x]
     return output
 
@@ -74,29 +74,29 @@ def getRecipe(userdata):
     output = generate(userdata)
     return output[output.index('Instructions:'):]
         
-# def getImage(userdata):
+def getImage(userdata):
     
-#     output = generate(userdata)
+    output = generate(userdata)
     
-#     responce_2 = client.images.generate(
-#         model="dall-e-2",
-#         prompt=f"Make a picture of {generate(userdata)[0]},  be really simple"
-#         +f"the dish should reflect the ingredients used {output[output.index('Ingredients:'):output.index('Instructions:')]}, "
-#         +"there should be nothing else but the dish in the image",
-#         size="1024x1024",
-#         quality="standard",
-#         n=1,
-#     )
+    response_2 = client.images.generate(
+        model="dall-e-2",
+        prompt=f"Make a picture of {generate(userdata)[0]},  be really simple"
+        +f"the dish should reflect the ingredients used {output[output.index('Ingredients:'):output.index('Instructions:')]}, "
+        +"there should be nothing else but the dish in the image",
+        size="1024x1024",
+        quality="standard",
+        n=1,
+    )
 
-#     image_url = responce_2.data[0].url
-#     return image_url
+    image_url = response_2.data[0].url
+    return image_url
 
 class Dish:
     def __init__(self, userdata):
         self.name = getName(userdata)
         self.ingredients = getIngredients(userdata)
         self.recipe = getRecipe(userdata)
-        # self.image = getImage(userdata)
+        self.image = getImage(userdata)
         
     def __str__(self):
-        return f"{self.name}\n\n{self.ingredients}\n\n{self.recipe}"
+        return f"{self.name}:{self.image}\n\n{self.ingredients}\n\n{self.recipe}"

@@ -1,14 +1,16 @@
 #pckgs
 import pymongo
+from mongodb import validateUser, getPantry, createUser, setPantry
+
 from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
 #built-in
 from random import seed
 from hashlib import sha256
+import json
 
 #file imports
-from mongodb import validateUser, getUserData, createUser
-
+from dish import Dish
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
 app.secret_key = seed() #will make data stored on filesystem encrypted and secure
@@ -19,9 +21,8 @@ Session(app)
 
 @app.route("/") #this is the Home screen
 def index():
-
-    # if not session.get("username"):
-    #     return redirect("/login")
+    if not session.get("username"):
+        return redirect("/login")
 
     return render_template('index.html')
 
@@ -34,6 +35,7 @@ def login(): #if not signed in, goes to login
         hashpass = None if not request.form.get("password") else sha256(request.form.get("password").encode("utf-8")).hexdigest()
 
         validation = validateUser(username, hashpass)
+        print(username, hashpass, validation, sep="\t")
 
         if not (username and hashpass):
             err = "Please fill out Username and Password fields"
@@ -41,7 +43,7 @@ def login(): #if not signed in, goes to login
             err = f"No registered account under {username}"
         elif validation == 0:
             err = "Password Incorrect"
-        else:
+        else: # login success
             session["username"] = request.form.get("username")
             return redirect("/")
     
@@ -63,7 +65,7 @@ def signup(): #if not signed in, goes to login
         
         if not (username and age and hashpass): #failed
             err = "Please fill out Username, Password, and Age fields"
-        elif not age.isdigit() or len([x for x in age if x in "-.," ]) > 0:
+        elif not age.isdigit() or len([x for x in age if x in "-.,"]) > 0:
             err = "Age must be an integer number"
         elif validation == 0 or validation == 1:
             err = "User account already exists, please log in"
@@ -75,10 +77,10 @@ def signup(): #if not signed in, goes to login
 
     return render_template("signup.html", err = err, isErr = (str(bool(err)))) #brings user to signup
 
-@app.route("/logout")
+@app.route("/logout") #DONE
 def logout():
     session["username"] = None
-    return redirect("/") #back to login screen
+    return redirect("/login") #back to login screen
 
 @app.route("/dishes")
 def dishes():
@@ -87,14 +89,18 @@ def dishes():
         return redirect("/login")
 
     # dishes = getDishes(session.userData)
-    render_template("dishes.html") #TODO include 3 dishes
+    return render_template("dishes.html") #TODO include 3 dishes
 
 @app.route("/pantry")
 def pantry():
+
     if not session.get("username"): #not signed in
         return redirect("/login")
-
-    return render_template("pantry.txt")
+ 
+    pantry = getPantry(session.get("username"))
+    foods, quantities = ["", ""] if not pantry else pantry.items()
+    
+    return render_template("pantry.html", foods = foods, quantities = quantities, zip=zip)
 
 @app.route("/pantryUploadForm", methods = ["POST", "GET"])
 def uploadForm():
@@ -106,9 +112,7 @@ def uploadForm():
         foodQuantityNumber = request.form.get("quantityNumber") #returns the number of (unit of measure) the user has of a certain foodstuff
         foodQuantityMeasure = request.form.get("quantityMeasure") #returns the unit of measure for which the user has a quantity of a given foodstuff
         
-
-        session["pantry"][foodName] = f"{foodQuantityNumber} {foodQuantityMeasure}" #overwrites pre-existing foodstuffs
-        
+        setPantry(session['username'], foodName, f"{foodQuantityNumber} {foodQuantityMeasure}") #overwrites pre-existing foodstuffs
         return redirect("/pantryUploadForm") #allows user to resubmit without having to erase previous submission
 
     return render_template("/pantryUploadForm.html")

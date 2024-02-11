@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    <!-- link files -->
+    <link rel="stylesheet"  type="text/css"  href="{{ url_for('static', filename='styles/index.css') }}"/>
+    <title>My Pantry</title>
+    
+    <style>
+        body {
+            margin: 0; /* Reset default margins */
+            padding: 20px; /* Add some spacing around the content */
+        }
+
+        .bottom-button {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            background-color: #ed1734; /* Example color - feel free to change */
+            color: white;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    
+    <center><h1>My Pantry</h1><center>
+
+    <a href="/pantryUploadForm">
+        <div class="top-button">
+            Edit Pantry
+        </div>
+    </a>
+
+
+  <ul>
+    {% for food, quantity in zip(foods|safe, quantities|safe) %}
+        <h5><li>{{ food }}, {{ quantity }}</li></h5>
+    {% endfor %}
+  </ul>
+
+  <div class="container-fluid mt-3">
+    <div id="bottomNav" class="stickyBottomNav">
+      <div class="d-flex justify-content-between">
+        <!-- home -->
+        <div class="col-md-3 col-sm-6"> 
+          <a href="\"><img src="imgs/placeholder.svg" alt="Home" class="btn-img"></a> 
+        </div>
+        <!-- pantry -->
+        <div class="col-md-3 col-sm-6">
+          <a href="/pantry"><img src="imgs/placeholder.svg" alt="Pantry" class="btn-img"></a>
+        </div>
+        <!-- menu -->
+        <div class="col-md-3 col-sm-6">
+          <a href="/dishes"><img src="imgs/placeholder.svg" alt="Menu" class="btn-img"></a>
+        </div>
+        <!-- profile -->
+        <div class="col-md-3 col-sm-6">
+          <a href="/logout"><img src="imgs/placeholder.svg" alt="Log Out" class="btn-img"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</body>
+</html>
