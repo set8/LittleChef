@@ -1,18 +1,25 @@
 import pymongo
 from pymongo import MongoClient
+import certifi
 #set up information
 
+ca = certifi.where()
 key = "34a63dfcc24fadbc2f4cf435e4d56ed99a36115c"
-cluster = MongoClient("mongodb+srv://adityabaradi:Aditya%40123@lil-chef.fevflcg.mongodb.net/?retryWrites=true&w=majority")
+cluster = MongoClient("mongodb+srv://adityabaradi:Aditya%40123@lil-chef.fevflcg.mongodb.net/?retryWrites=true&w=majority", 
+                      ssl=True, 
+                      tlsAllowInvalidCertificates=False,
+                      tls=True,
+                      tlsCAFile=ca)
 
 #set up mongodb
 
 db = cluster["UserData"]
 collection = db["Flask_mongo"]
 
-
 def createUser(usr, hashpw, allergies, diet, age, pantry ):  
     user_name = usr 
+    print(usr, hashpw, allergies, diet, age, pantry, sep="\n")
+
     collection.insert_one({
         user_name:  {
             "password_hash": hashpw,
@@ -74,6 +81,7 @@ def validateUser(usr,hash_pass):
     """Returns -1 if user not is database
     Returns 0 if user in database but user.hashpass != hashpass
     Returns 1 if user in database and hash_pass for the user and the parameter are the same"""
+    print(usr, hash_pass)
     diction = collection.find_one()
     for i in diction:
         info = i
@@ -87,6 +95,7 @@ def validateUser(usr,hash_pass):
             else:
                 return(0)
     return(-1)
+
 def deleteUser(usr):
     diction = collection.find_one()
     for i in diction:
