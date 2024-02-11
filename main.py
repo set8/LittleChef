@@ -73,7 +73,7 @@ def signup(): #if not signed in, goes to login
         
         else: #everything is peachy :3
             session["username"] = username #can now navigate the website
-            createUser(username, hashpass, "" if not allergens else allergens.split(","), diet, age, {}) #upload to mongo
+            createUser(username, hashpass, "" if not allergens else allergens.split(","), diet, age, {"":""}) #upload to mongo
             return redirect("/")
 
     return render_template("signup.html", err = err, isErr = (str(bool(err)))) #brings user to signup
