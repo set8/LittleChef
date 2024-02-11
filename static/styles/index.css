@@ -43,6 +43,10 @@ h2 {
   font-family: 'Baloo Bhaijaan 2', sans-serif;
 }
 
+.space-embed {
+  margin: 5vh;
+}
+
 .image {
   display: flex;
   justify-content: center; 
@@ -76,7 +80,7 @@ h2 {
 }
 
 .btn-img {
-  width: 100%; 
+  width: 20%; 
   height: auto; 
   display: block; 
 }
