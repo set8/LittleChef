@@ -31,20 +31,33 @@ def login(): #if not signed in, goes to login
         session["username"] = request.form.get("username")
         return redirect("/")
     
-    return render_template("login.html", err=err, isErr = (str(bool(err)))) #brings user to login page
+    return render_template("login.html", err = err, isErr = (str(bool(err)))) #brings user to login page
 
-@app.route("/signup", methods= ["POST", "GET"])
+@app.route("/signup", methods= ["POST", "GET"]) #TODO PLEASE TEST, PLEASE GOD
 def signup(): #if not signed in, goes to login
     err = ""
 
     if request.method == "POST": #user submitted form
-        # if usr not in users: meaning that user doesn't alreaady exist -> redirect them to sign-up
-        # if login(usr, sha256(pass.encode("utf-8")).hexdigest()): meaning that the entered password is valid for a pre-existing user 
-        session["username"] = request.form.get("username")
-        # store(sha256(request.form.get("pw").encode("uft-8")).hexdigest())
-        return redirect("/")
+        #TODO test all values and conditionals
+        username = request.form.get("username")
+        hashpass = None if not request.form.get("password") else sha256(request.form.get("password").encode("utf-8")).hexdigest()
+        age = request.form.get("age")
 
-    return render_template("signup.html", err=err) #brings user to login
+        allergens = request.form.get("allergen")
+        diet = request.form.get("diet")
+
+        if not (username and age and hashpass): #failed
+            err = "Please fill out Username, Password, and Age fields"
+        elif not age.isdigit() or len([x for x in age if x in "-.," ]) > 0:
+            err = "Age must be an integer number"
+        # elif already in DB:
+            # There is already a user with this username, please sign in
+        else: #everything is peachy :3
+            #upload to DB
+            session["username"] = username
+            return redirect("/")
+
+    return render_template("signup.html", err = err, isErr = (str(bool(err)))) #brings user to signup
 
 @app.route("/logout")
 def logout():
@@ -65,14 +78,14 @@ def pantry():
     if not session.get("username"): #not signed in
         return redirect("/login")
 
-    return render_template(pantry)
+    return render_template("pantry.txt")
     
-@app.route("/pantryUploadCamera")
-def uploadCamera():
-    if not session.get("username"): #not signed in
-        return redirect("/login")
+# @app.route("/pantryUploadCamera")
+# def uploadCamera():
+#     if not session.get("username"): #not signed in
+#         return redirect("/login")
     
-    return render_template("pantryUploadCamera.html")
+#     return render_template("pantryUploadCamera.html")
 
 @app.route("/pantryUploadForm", methods = ["POST", "GET"])
 def uploadForm():
@@ -80,17 +93,16 @@ def uploadForm():
         return redirect("/login")
 
     if request.method == "POST":
-        foodName = request.form.get("name") #returns the name of the food item
+        foodName = request.form.get("foodName") #returns the name of the food item
         foodQuantityNumber = request.form.get("quantityNumber") #returns the number of (unit of measure) the user has of a certain foodstuff
         foodQuantityMeasure = request.form.get("quantityMeasure") #returns the unit of measure for which the user has a quantity of a given foodstuff
+        
+        print(f"'{foodQuantityNumber} {foodQuantityMeasure} of {foodName}': WAS ENTERED")
 
-        if foodName in session["userData"]["pantry"]: #TODO decide whether to override pre-existing counts or to add to it
-            pass
+        session["pantry"][foodName] = f"{foodQuantityNumber} {foodQuantityMeasure}" #overwrites pre-existing foodstuffs
+        return redirect("/pantryUploadForm") #allows user to resubmit without having to erase previous submission
 
-        session["userData"]["pantry"][foodName] = f"{foodQuantityNumber} {foodQuantityMeasure}" #overwrites pre-existing foodstuffs
-        return redirect("/pantryUploadForm.html") #allows user to resubmit without having to erase previous submission
-
-    return render_template("/pantryUploadForm")
+    return render_template("/pantryUploadForm.html")
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port = 8081)
