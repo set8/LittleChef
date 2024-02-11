@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Menu</title>
+
+          <!--boostrap initialization-->
+          <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+          <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+          
+          <!-- link files -->
+          <link rel="stylesheet"  type="text/css"  href="{{ url_for('static', filename='styles/menu.css') }}"/>
+          <script src="js/index.js"></script>
+</head>
+ 
+<body>
+    <!-- little chef title -->
+    <header class="text-center my-auto">
+        Menu
+    </header>
+
+    <div class="space-embed"></div>
+    <!--cards-->
+    <div class="row mx-5 my-2">
+        <div class="card mb-3">
+            <img src="{{ url_for('static', filename='imgs/placeholder.css') }}" class="card-img-top" alt="food-img">
+            <div class="card-body">
+                <h5 class="card-title">Menu Name</h5>
+                <p class="card-text">Recipe Nonsense:
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Vestibulum sit amet tellus faucibus, gravida nibh in, tincidunt nisl. Etiam feugiat dolor ac urna fermentum feugiat. Praesent quis dui quam. Aenean aliquet ultricies urna nec fermentum. Etiam sit amet venenatis turpis.
+                    Vestibulum blandit egestas dolor tincidunt facilisis. Suspendisse tincidunt, nisl nec vulputate varius, dolor purus tempor augue,
+                    ut varius lectus eros vulputate quam. Curabitur non venenatis quam. Nullam fermentum ipsum quis neque bibendum tempus. Donec eget neque metus. Maecenas lorem sem, pretium laoreet lacinia vel, tristique nec turpis. In sed luctus purus.
+                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer pulvinar blandit elit at interdum.</p>
+            </div>
+        </div>
+    </div>
+    <div class="space-embed"></div>
+    <div class="row mx-5 my-2">
+        <div class="card mb-3">
+            <img src="{{ url_for('static', filename='imgs/placeholder.css') }}" class="card-img-top" alt="food-img">
+            <div class="card-body">
+                <h5 class="card-title">Menu Name</h5>
+                <p class="card-text">Recipe Nonsense:
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Vestibulum sit amet tellus faucibus, gravida nibh in, tincidunt nisl. Etiam feugiat dolor ac urna fermentum feugiat. Praesent quis dui quam. Aenean aliquet ultricies urna nec fermentum. Etiam sit amet venenatis turpis.
+                    Vestibulum blandit egestas dolor tincidunt facilisis. Suspendisse tincidunt, nisl nec vulputate varius, dolor purus tempor augue,
+                    ut varius lectus eros vulputate quam. Curabitur non venenatis quam. Nullam fermentum ipsum quis neque bibendum tempus. Donec eget neque metus. Maecenas lorem sem, pretium laoreet lacinia vel, tristique nec turpis. In sed luctus purus.
+                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer pulvinar blandit elit at interdum.</p>
+            </div>
+        </div>
+    </div>
+    <div class="space-embed"></div>
+    <div class="row mx-5 my-2">
+        <div class="card mb-3">
+            <img src="{{ url_for('static', filename='imgs/placeholder.css') }}" class="card-img-top" alt="food-img">
+            <div class="card-body">
+                <h5 class="card-title">Menu Name</h5>
+                <p class="card-text">Recipe Nonsense:
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Vestibulum sit amet tellus faucibus, gravida nibh in, tincidunt nisl. Etiam feugiat dolor ac urna fermentum feugiat. Praesent quis dui quam. Aenean aliquet ultricies urna nec fermentum. Etiam sit amet venenatis turpis.
+                    Vestibulum blandit egestas dolor tincidunt facilisis. Suspendisse tincidunt, nisl nec vulputate varius, dolor purus tempor augue,
+                    ut varius lectus eros vulputate quam. Curabitur non venenatis quam. Nullam fermentum ipsum quis neque bibendum tempus. Donec eget neque metus. Maecenas lorem sem, pretium laoreet lacinia vel, tristique nec turpis. In sed luctus purus.
+                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer pulvinar blandit elit at interdum.</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- sticky bottom nav -->
+
+    <div class="container-fluid mt-3">
+        <div id="bottomNav" class="stickyBottomNav">
+          <div class="d-flex justify-content-between">
+            <!-- home -->
+            <div class="col-md-3 col-sm-6"> 
+              <a href="templates/home.html"><img src="{{ url_for('static', filename='imgs/home.svg') }}" alt="Home" class="btn-img"></a> 
+            </div>
+            <!-- pantry -->
+            <div class="col-md-3 col-sm-6">
+              <a href="templates/pantry.html"><img src="{{ url_for('static', filename='imgs/placeholder.svg') }}" alt="Pantry" class="btn-img"></a>
+            </div>
+            <!-- menu -->
+            <div class="col-md-3 col-sm-6">
+              <a href="templates/dishes.html"><img src="{{ url_for('static', filename='imgs/placeholder.svg') }}" alt="Menu" class="btn-img"></a>
+            </div>
+            <!-- logout -->
+            <div class="col-md-3 col-sm-6">
+              <a href="templates/profile.html"><img src="{{ url_for('static', filename='imgs/placeholder.svg') }}" alt="Profile" class="btn-img"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+</body>
+</html>
